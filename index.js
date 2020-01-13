@@ -5,29 +5,74 @@ class Lobby {
     console.log(message)
   }
 
-  constructor (game) {
-    console.log('game argument test:', game)
+  makeNewGame (name) {
+    const game = new Game(name)
 
+    console.log('game test:', game)
+
+    this.games.push(game)
+
+    console.log('this.games test:', this.games)
+  }
+
+  constructor (game) {
     this.message = 'hello'
     this.game = game
 
-    console.log('this.game test:', game)
-    console.log('lobby constructor test')
+    this.games = []
   }
 }
 
-console.log('start')
+class Game {
+  constructor (name) {
+    this.name = name
+    this.players = []
+  }
 
-console.log('\nLobby 1:')
+  start () {
+    // this.players.length === 0
+    console.log('this.players.length test:', this.players.length)
+    if (this.players.length) {
+      this.phase = 'started'
+    } else {
+      console.log('No players')
+      this.phase = 'failed'
+    }
+  }
+
+  join (player) {
+    this.players.push(player)
+  }
+}
+
+class BotGame extends Game {
+  constructor (name) {
+    super(name)
+
+    this.name = `${this.name} - AI ONLY`
+    this.players.push('ai')
+  }
+
+  join () {
+    console.log('only for bots!')
+  }
+}
+
+const game = new Game('normal')
+console.log('game test:', game)
+
+game.start()
+game.join('david')
+
+console.log('game after test:', game)
+
+const botGame = new BotGame('just for bots')
+console.log('\nbotGame test:', botGame)
+
+botGame.start()
+botGame.join('david')
+
+console.log('botGame after test:', botGame)
+
 const lobby = new Lobby('curvefever')
 console.log('lobby test:', lobby)
-
-lobby.welcome()
-
-console.log('lobby 1 game:', lobby.game)
-
-console.log('\nLobby 2:')
-const lobby2 = new Lobby()
-console.log('lobby2 test:', lobby2)
-
-lobby2.welcome()
